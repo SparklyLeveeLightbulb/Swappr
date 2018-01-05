@@ -92,64 +92,66 @@ app.post('/giveEmail', (req, res) => {
 
 const dummyData = {
   id: 1,
-  email: "cings0@comcast.net",
+  email: 'cings0@comcast.net',
   reviews: [
     {
       rating: 1,
-      review: "There was no laptop in the box. It was just a bunch of rocks!!",
+      review: 'There was no laptop in the box. It was just a bunch of rocks!!',
       reviewee: 81,
-      reviewer: 78
+      reviewer: 78,
     },
     {
       rating: 3,
-      review: "It was not what was pictured but it still worked.",
+      review: 'It was not what was pictured but it still worked.',
       reviewee: 45,
-      reviewer: 33
+      reviewer: 33,
     },
     {
       rating: 2,
-      review: "He is rude",
+      review: 'He is rude',
       reviewee: 89,
-      reviewer: 53
+      reviewer: 53,
     },
     {
       rating: 5,
-      review: "The cookie he swapped me was a tasty",
+      review: 'The cookie he swapped me was a tasty',
       reviewee: 93,
-      reviewer: 86
+      reviewer: 86,
     },
     {
       rating: 4,
-      review: "The playstation was in pretty good condition",
+      review: 'The playstation was in pretty good condition',
       reviewee: 4,
-      reviewer: 11
-    }
-  ]
+      reviewer: 11,
+    },
+  ],
 };
 
 app.get('/email', (req, res) => {
   console.log('i got hit ', id);
   res.send({ id });
 });
-app.get('/getEmail', (req, res) => {
-  res.send({ email: dummyData.email });
-});
 
-app.post('/email', (req, res) => {
-  res.send('cool');
-});
+/*  SERVER CALLS FOR TESTING WITH DUMMY DATA
+  app.get('/getEmail', (req, res) => {
+    res.send({ email: dummyData.email });
+  });
 
-app.get('/reviews', (req, res) => {
-  res.send(dummyData);
-});
-app.post('/reviews', (req, res) => {
-  dummyData.reviews.push(req.body);
-  res.send(dummyData);
-});
+  app.post('/email', (req, res) => {
+    res.send('cool');
+  });
 
-app.get('/getEmail', (req, res) => {
-  console.log(req.query.id);
-  const foundId = req.query.id;
+  app.get('/reviews', (req, res) => {
+    res.send(dummyData);
+  });
+  app.post('/reviews', (req, res) => {
+    dummyData.reviews.push(req.body);
+    res.send(dummyData);
+  });
+*/
+
+app.get('/getEmail/:id', (req, res) => {
+  const foundId = req.params.id;
   db.User.find({
     where: {
       id: foundId,
@@ -159,36 +161,43 @@ app.get('/getEmail', (req, res) => {
       res.send(user.email);
     })
     .catch((err) => {
-      console.log('this is /getEmail GET err ', err);
+      console.error('this is /getEmail GET err ', err);
       res.sendStatus(500);
     });
 });
-// app.get('/reviews', (req, res) => {
-//   console.log('this is req.data from /reviews GET ', req.data);
-//   console.log('this is res.body from /reviews GET ', res.body);
-//   db.Review.findAll({
-//     where: {
-//       reviewee: req.data.id,
-//     },
-//   }).then((comment) => {
-//     res.send(comment);
-//   });
-// });
 
-// app.post('/reviews', (req, res) => {
-//   console.log('I am res.body from /reviews POST ', res.body);
-//   console.log('I am req.body from /reviews POST', req.body);
-//   db.Review.create({
-//     comment: req.body.review,
-//     rating: req.body.rating,
-//     reviewee: req.body.reviewee,
-//     reviewer: req.body.reviewer,
-//   }).then(review =>
-//       res.send(review))
-//     .catch((err) => {
-//       console.log('this is /reviews POST err ', err);
-//       res.sendStatus(500);
-//     });
-// });
+app.get('/reviews/:id', (req, res) => {
+  console.log(req.params.id);
+  const foundId = req.params.id;
+  db.Review.find({
+    where: {
+      id_reviewee: foundId,
+    },
+  }).then((reviews) => {
+    console.log(reviews);
+    res.send(reviews);
+  });
+});
+
+app.post('/reviews', (req, res) => {
+  console.log('I am req.body from /reviews POST ', req.body);
+  db.Review.sync({ force: true })
+  .then(() => {
+    return db.Review.create({
+      reviewee: req.body.reviewee,
+      reviewer: req.body.reviewer,
+      comment: req.body.review,
+      rating: req.body.rating,
+    });
+  })
+    .then((review) => {
+      console.log(review.dataValues);
+      res.send(review.dataValues);
+    })
+    .catch((err) => {
+      console.log('this is /reviews POST err ', err);
+      res.sendStatus(500);
+    });
+});
 
 module.exports = app;
