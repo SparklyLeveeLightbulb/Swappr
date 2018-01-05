@@ -129,8 +129,14 @@ app.get('/email', (req, res) => {
   console.log('i got hit', id);
   res.send({ id });
 });
-app.get('/getEmail', (req, res) => {
-  res.send({ email: dummyData.email });
+app.get('/getEmail/:id', (req, res) => {
+  db.User.findOne({
+    where: {
+      id: id,
+    },
+  }).then(email => res.send(email.email))
+  .catch(err => console.error(err));
+  
 });
 
 app.post('/email', (req, res) => {
