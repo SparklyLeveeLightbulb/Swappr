@@ -164,3 +164,40 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#05bddba4', e
     color: white;
 
  }
+
+ .reviews {
+    border-style: solid;
+    padding: 15px;
+    padding-bottom: 20px;
+    border-width: 2px;
+    border-color:#d16244;
+    margin-top: 10px;
+    font-family: Lato;
+
+
+    
+
+  }
+ #rating {
+   
+        margin-right:5px;
+        float:left;
+        font-weight: bold;
+        margin-bottom: 10px;
+        font-family: Lato;
+
+
+}
+#review {
+  margin-right: 5px;
+  font-size: 16px;
+  margin-top: 25px;
+}
+#swapperreviews {
+font-family: Lato;
+/* font-weight: bold; */
+
+}
+
+
+
