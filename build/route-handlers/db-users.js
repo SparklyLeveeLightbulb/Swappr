@@ -88,8 +88,64 @@ app.post('/giveEmail', (req, res) => {
 });
 
 app.get('/email', (req, res) => {
-  console.log('i got hit', id);
-  res.send({ id });
+  console.log('i got hit ', id);
+  console.log('this is req.data from /email GET', req.data);
+  db.User.findOne({
+    where: {
+      id: this.id,
+    },
+  })
+    .then((email) => {
+      app.get('/reviews', (req, res) => {
+        console.log('this is req.data from /reviews GET ', req.data);
+        console.log('this is res.body from /reviews GET ', res.body);
+        db.Review.findAll({
+          where: {
+            reviewee: req.data.id,
+          },
+        })
+          .then(() => {
+            res.send(200);
+          })
+          .catch((err) => {
+            console.log('this is /reviews GET err ', err);
+            res.sendStatus(500);
+          });
+      });
+    })
+      .catch((err) => {
+        console.log('this is /email GET err ', err);
+        res.sendStatus(500);
+      });
+  // res.send({ id });,
+});
+
+// app.get('/reviews', (req, res) => {
+//   console.log('this is req.data from /reviews GET ', req.data);
+//   console.log('this is res.body from /reviews GET ', res.body);
+//   db.Review.findAll({
+//     where: {
+//       reviewee: req.data.id,
+//     }
+//   }).then(comment => {
+
+//   })
+// })
+
+app.post('/reviews', (req, res) => {
+  console.log('I am res.body from /reviews POST ', res.body);
+  console.log('I am req.body from /reviews POST', req.body);
+  db.Review.create({
+    comment: req.body.review,
+    rating: req.body.rating,
+    reviewee: req.body.reviewee,
+    reviewer: req.body.reviewer,
+  }).then(review =>
+      res.send(review))
+    .catch((err) => {
+      console.log('this is /reviews POST err ', err);
+      res.sendStatus(500);
+    });
 });
 
 module.exports = app;

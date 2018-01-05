@@ -1,38 +1,44 @@
-const express = require('express');
-const Sequelize = require('sequelize');
-const db = require('../../app/db');
+// const express = require('express');
+// // const Sequelize = require('sequelize');
+// const db = require('../../app/db');
+// const axios = require('axios');
 
-const app = express();
+// const app = express();
 
-const Op = Sequelize.Op;
+// const Op = Sequelize.Op;
 
-app.use(express.json());
+// app.use(express.json());
 
-app.post('/reviews', (req, res) => {
-  
-  const { email } = req.body;
+// sending GET /reviews - sending ID -
+// query DB(reviews) for reviews associated with person being reviewed(ID)
 
-  return db.Review.findCreateFind({
-    where: {
-      email,
-      id_facebook,
-    },
-  })
-    .spread((userResult, created) => {
-      if (created) {
-        userResult.update({ name })
-          .then((updatedUser) => {
-            res.send(updatedUser);
-          });
-      } else if (userResult === null) {
-        res.send(406, 'could not find or create');
-      } else {
-        res.send(userResult);
-      }
-    })
-    .catch((err) => {
-      console.error(err);
-      res.send(500, err);
-    });
-});
+// app.post('/reviews', (req, res) => {
+//   console.log('Hitting the /reviews endpoint ');
 
+  // const { id } = req.headers;
+  // db.Review.findAll({
+  //   where: {
+  //     reviewee: id,
+  //   },
+  // })
+  //   .then(reviews =>
+  //     res.send(reviews))
+  //   .catch((err) => {
+  //     console.log(err);
+  //     res.sendStatus(500);
+  //   });
+//   res.send('HELLO');
+// });
+
+// app.post('/reviews', (req, res) => {
+//   console.log('I am hit from a POST');
+//   const {} = req.body;
+// })
+/*
+{
+  reviewer: int,
+  reviewee: int,
+  rating: 1 - 5,
+  review: 'a great experience',
+}
+*/
