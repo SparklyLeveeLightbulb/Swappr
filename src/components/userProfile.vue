@@ -121,19 +121,16 @@ export default {
         .then((email) => {
           this.id = email.data.id;
           axios.post('/email', { body: this.id })
-        .then((item) => {
-          axios.get('/getEmail')
+        .then(() => {
+          axios.get(`/getEmail/${this.id}`)
           .then((userEmail) => {
-            this.email = userEmail.data.email;
+            this.email = userEmail.data;
             axios.get('/reviews')
             .then((reviews) => {
               this.reviews = reviews.data.reviews;
             });
           })
           .catch(err => console.log(err));
-          console.log(item);
-        }).catch((err) => {
-          console.log(err);
         });
         })
       .catch((err) => {
