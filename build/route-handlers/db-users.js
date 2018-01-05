@@ -131,18 +131,6 @@ app.get('/email', (req, res) => {
   console.log('i got hit ', id);
   res.send({ id });
 });
-<<<<<<< HEAD
-=======
-app.get('/getEmail/:id', (req, res) => {
-  db.User.findOne({
-    where: {
-      id: id,
-    },
-  }).then(email => res.send(email.email))
-  .catch(err => console.error(err));
-  
-});
->>>>>>> 5c2c8bdc41f8d4d5c6f9032acb0adadde0dcf119
 
 /*  SERVER CALLS FOR TESTING WITH DUMMY DATA
   app.get('/getEmail', (req, res) => {
