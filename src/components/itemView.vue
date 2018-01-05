@@ -1,24 +1,24 @@
-  <template>
-    <div :class="item.id">
-      <div class="item-card card col-12 mx-1 ml-sm-4 ml-md-4 p-0" @click="show" style="margin: 5px; border-style: outset; width: 10rem; height: 9rem;">
-        <div class="card-body p-0 m-0">
-          <img class="item-img rounded-top p-0 m-0" :src="item.url_img">
-        </div>
-        <div class="card-footer px-0 pt-1 m-0 border-none">
-          <h6 class="card-title">{{ item.name }}</h6>
-        </div>
+<template>
+  <div :class="item.id">
+    <div class="item-card card col-12 mx-1 ml-sm-4 ml-md-4 p-0" @click="show" style="margin: 5px; border-style: outset; width: 10rem; height: 9rem;">
+      <div class="card-body p-0 m-0">
+        <img class="item-img rounded-top p-0 m-0" :src="item.url_img">
       </div>
-      <b-modal :ref="item.id">
-        <div slot="modal-header" class="w-100">
-          <h4 class="modal-title float-left">{{ item.name }}</h4>
-          <button class="close float-right" @click="hide">&times;</button>
-        </div>
-        <div class="modal-body" style="height: 10rem;">
-          {{ item.description }}<br>
-          <img class="item-img rounded-top p-0 m-0" :src="item.url_img">
-        </div>
-        <div slot="modal-footer" class="w-100">
-          <a href="#" @click="removeListing" class="btn btn-danger  btn-sm float-left">Delete Item</a>
+      <div class="card-footer px-0 pt-1 m-0 border-none">
+        <h6 class="card-title">{{ item.name }}</h6>
+      </div>
+    </div>
+    <b-modal :ref="item.id">
+      <div slot="modal-header" class="w-100">
+        <h4 class="modal-title float-left">{{ item.name }}</h4>
+        <button class="close float-right" @click="hide">&times;</button>
+      </div>
+      <div class="modal-body" style="height: 10rem;">
+        {{ item.description }}<br>
+        <img class="item-img rounded-top p-0 m-0" :src="item.url_img">
+      </div>
+      <div slot="modal-footer" class="w-100">
+        <a href="#" @click="removeListing" class="btn btn-danger  btn-sm float-left">Delete Item</a>
           <a href="#" @click="hide" class="btn btn-primary float-right">Close</a>
         </div>
       </b-modal>          

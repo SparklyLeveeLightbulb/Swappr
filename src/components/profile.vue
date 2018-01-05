@@ -33,6 +33,7 @@
             <div class="row">
               <item-view v-for="(item,index) in profileItems" :item='item' :key='index' v-on:deleted-item="getUserItems"></item-view>
             </div>
+
           </div>
         </div>
       </div>
@@ -75,7 +76,6 @@ export default {
       };
       return axios.get('/items', config)
       .then(({ data: userItems }) => {
-        console.log('FUCKKKKKKK', userItems, 'this is userItems in profile.vue line 78');
         this.profileItems = userItems;
       })
       .catch(err => console.error(err));

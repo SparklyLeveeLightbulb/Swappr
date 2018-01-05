@@ -30,7 +30,7 @@
       <div class="card inner-container p-2" style="min-height: 10em;">
         <div class="float-right" style="height: 3rem;"></div>
         <!-- <add-item v-bind="$props" v-on:new-item="newItem"></add-item> -->
-        <h1>USER NAME HERE</h1>
+        <h1>USER NAME HERE {{id}}</h1>
         <div class="card pl-3 my-1 w-100 item-box">
           
           <div class="container">
@@ -42,19 +42,19 @@
 
    <div class="container pb-cmnt-container">
       <b-dropdown  id="ddown1" text="Rate this Swappr" class="m-md-2">
-    <b-dropdown-item>5</b-dropdown-item>
-    <b-dropdown-item>4</b-dropdown-item>
-    <b-dropdown-item>3</b-dropdown-item>
-    <b-dropdown-item>2</b-dropdown-item>
-    <b-dropdown-item>1</b-dropdown-item>
+    <b-dropdown-item @click='newRating(5)'>5</b-dropdown-item>
+    <b-dropdown-item @click='newRating(4)'>4</b-dropdown-item>
+    <b-dropdown-item @click='newRating(3)'>3</b-dropdown-item>
+    <b-dropdown-item @click='newRating(2)'>2</b-dropdown-item>
+    <b-dropdown-item @click='newRating(1)'>1</b-dropdown-item>
   </b-dropdown>
     <div class="row">
         <div class="col-md-12 col-md-offset-3">
             <div class="panel panel-info">
                 <div class="panel-body">
-                    <textarea placeholder="Write your comment here!" class="pb-cmnt-textarea"></textarea>
+                    <textarea v-model='review' placeholder="Write your comment here!" class="pb-cmnt-textarea"></textarea>
                     <form class="form-inline">
-                        <button class="btn  pull-right" type="button">Review</button>
+                        <button class="btn  pull-right" type="button" @click="postReview">Review</button>
                     </form>
                 </div>
             </div>
@@ -89,9 +89,13 @@ export default {
     return {
       name: '',
       email: '',
+      review: '',
+      id: '',
+      rating: '',
       description: '',
       tradeOffers: [],
       profileItems: [],
+      reviews: [],
       acceptedTrade: {
         traderName: '',
         traderEmail: '',
@@ -102,17 +106,33 @@ export default {
     axios.get('/email')
         .then((email) => {
           this.id = email.data.id;
+          axios.post('/email', { body: this.id })
+        .then((item) => {
+          console.log(item);
+        }).catch((err) => {
+          console.log(err);
+        });
         })
       .catch((err) => {
         console.log(err, 'err');
       });
   },
   methods: {
-    newItem({ data: newItem }) {
-      this.profileItems.push(newItem);
+    newRating(num) {
+      console.log(this.rating, 'before');
+      this.rating = num;
+      console.log(this.rating);
     },
-    test() {
-      console.log(this.traderEmail);
+    postReview() {
+      console.log(this.review);
+      const newReview = {
+        reviewer: this.userId,
+        reviewee: this.id,
+        review: this.review,
+        rating: this.rating,
+      };
+      console.log(newReview);
+      axios.post('/reviews', newReview);
     },
     getUserItems() {
       const config = {
